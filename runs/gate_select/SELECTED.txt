@@ -1,0 +1,7 @@
+aam_g2
+beats_v1=True
+backbone
+aam_g2       0.858173
+aam_g1       0.857348
+aam_trans    0.856755
+aam_g3       0.856531
