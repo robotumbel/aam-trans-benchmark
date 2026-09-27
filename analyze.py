@@ -180,7 +180,7 @@ def table_stats(st, out):
         lines.append(
             f"{ATK_LABEL[r.attack]} & {r.scope} & {r.n} & {r.mean_diff:+.3f} & "
             f"[{r.ci_lo:+.3f}, {r.ci_hi:+.3f}] & {r.d_z:.2f} & "
-            f"{r.wins}/{r.losses} & {fmt_p(r.p)} & {fmt_p(r.p_holm)} \\\\")
+            f"{r.wins}/{r.losses} & {fmt_p(r.p)} & {'--' if r.p_holm != r.p_holm else fmt_p(r.p_holm)} \\\\")
     with open(out, "w") as fh:
         fh.write("\n".join(lines) + "\n")
 
@@ -310,7 +310,7 @@ def fig_confusion(js, out, backbone="aam_trans", method="trades"):
         fs = 4.6 if n > 20 else 5.2
         ax.set_xticks(range(n)); ax.set_yticks(range(n))
         ax.set_xticklabels(range(n), fontsize=fs - 0.6)
-        ax.set_yticklabels([f"{names[i][:22]} ({int(round(sup[i, 0] / len(runs)))}) {i}"
+        ax.set_yticklabels([f"{names[i][:28]} ({int(round(sup[i, 0] / len(runs)))}) {i}"
                             for i in range(n)], fontsize=fs)
         ax.tick_params(length=1.5, pad=1)
         ax.set_title(ds, fontsize=7.5); ax.set_xlabel("predicted class index", fontsize=6)
