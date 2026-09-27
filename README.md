@@ -27,6 +27,7 @@ CICIoMT2024 and TON_IoT data, with ten seeds per configuration.
 | `diag_deadclass.py` | separability check for rarely predicted CICIoT2023 classes (kNN, random forest) |
 | `eval_realistic.py` | attacker-controllable-feature threat model evaluated on the saved checkpoints |
 | `bench_deploy.py` | single-thread CPU latency, int8, model size, MACs |
+| `verify_claims.py` | recomputes every number quoted in the manuscript from the per-seed results and reports MATCH / MISMATCH |
 | `run_all.ps1`, `run_gate.ps1`, `run_cw.ps1` | the exact command sequence used for the reported runs |
 | `figs/fig_arch.tex` | TikZ source of the architecture figure |
 
