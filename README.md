@@ -1,7 +1,7 @@
 # AAM-TRANS: per-feature token representations and adversarial robustness in IoT intrusion detection
 
 Code, protocol, per-seed results and trained models for the manuscript
-*Per-Feature Token Representations Drive Adversarial Robustness in Transformer-Based IoT Intrusion Detection: A Controlled Component Study* (E. A. Winanto, M. Y. Idris, F. T. Ramadhanti).
+*AAM-TRANS: Per-Feature Token Representations Drive Adversarial Robustness in Transformer-Based IoT Intrusion Detection* (E. A. Winanto, M. Y. Idris, F. T. Ramadhanti).
 
 AAM-TRANS (Adaptive Attention Mechanism Transformer) is a tabular Transformer
 with a per-feature tokeniser, a learned positional encoding, a per-head
