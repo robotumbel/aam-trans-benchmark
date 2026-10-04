@@ -6,9 +6,16 @@ Code, protocol, per-seed results and trained models for the manuscript
 AAM-TRANS (Adaptive Attention Mechanism Transformer) is a tabular Transformer
 with a per-feature tokeniser, a learned positional encoding, a per-head
 attention gate and a reconstruction head. It is compared with a vanilla
-Transformer that differs from it only in these four components, under
-identical TRADES and PGD adversarial training, on deduplicated CICIoT2023,
-CICIoMT2024 and TON_IoT data, with ten seeds per configuration.
+Transformer that differs from it only in these four components and with an
+FT-Transformer-style control, under identical TRADES and PGD adversarial
+training, on deduplicated CICIoT2023, CICIoMT2024 and TON_IoT data, with ten
+seeds per configuration and three further rounds of ten new seeds.
+
+Main findings: per-feature tokens raise robust MCC by 0.02 to 0.05 over the
+vanilla Transformer; the FT-Transformer-style control is as robust as
+AAM-TRANS; eleven adaptive attention designs from four generations add no
+robustness; a perturbation-aware token gate detects attacked inputs better
+than softmax confidence but worse than a Mahalanobis detector.
 
 ## Layout
 
@@ -22,6 +29,9 @@ CICIoMT2024 and TON_IoT data, with ten seeds per configuration.
 | `run.py` | experiment grid, resumable; one JSON per run and one CSV row per attack |
 | `analyze.py`, `make_tables.py` | sign-flip permutation tests, Holm correction, bootstrap CIs, tables, figures |
 | `PROTOCOL_GATE_V2.md`, `select_gate.py`, `analyze_gate.py` | pre-registered gate v2 study: validation-only selection, confirmation on seeds 11 to 20 |
+| `PROTOCOL_GATE_V3.md`, `run_gate3.ps1`, `make_tables_v3.py` | pre-registered third generation (token gate, attention masking, attention sharpness): selection, confirmation on seeds 21 to 30 |
+| `PROTOCOL_DETECT_V3.md`, `detect_v3.py`, `analyze_detect.py`, `run_detect.ps1` | pre-registered gate-as-detector study on seeds 31 to 40 (gate, residual, MSP, Mahalanobis; adaptive attack) |
+| `PROTOCOL_V4.md`, `select_v4.py`, `analyze_v4.py`, `make_tables_v4.py`, `run_v4.ps1`, `test_v4.py` | pre-registered fourth generation (alpha-entmax attention, feature purification, L2 attention, GELU) against the FT-Transformer-style control: selection, confirmation on seeds 41 to 50, unit checks |
 | `diag_deadclass.py` | separability check for rarely predicted CICIoT2023 classes (kNN, random forest) |
 | `eval_realistic.py` | attacker-controllable-feature threat model evaluated on the saved checkpoints |
 | `bench_deploy.py` | single-thread CPU latency, int8, model size, MACs |
@@ -42,12 +52,16 @@ LaTeX tables used in the manuscript.
 | `main` | binary; TRADES: 9 backbones x 3 datasets x seeds 1 to 10; PGD-AT: vanilla and AAM-TRANS |
 | `multiclass`, `multiclass_cw` | multiclass, plain and class-weighted loss |
 | `gate_select`, `gate_confirm` | gate v2 selection (validation) and confirmation (seeds 11 to 20) |
+| `gate3_select`, `gate3_confirm` | third-generation selection (validation) and confirmation (seeds 21 to 30) |
+| `detect_v3` | detection scores per dataset, seed, attack and score (seeds 31 to 40), with the tests |
+| `v4_select`, `v4_confirm` | fourth-generation selection (validation) and confirmation with the FT-style control (seeds 41 to 50) |
 | `train_eps02` | TRADES trained at eps 0.2 (CICIoT2023, TON_IoT) |
 | `realistic` | attacker-controllable-feature attack on the `main` checkpoints |
 | `deploy.csv`, `diag_deadclass.csv` | inference cost; dead-class diagnostics |
 
-Trained checkpoints (`*.pt`, about 730 MB) are attached to the GitHub release
-`v1.0` as one zip per tag; unzip them into `runs/<tag>/`.
+Trained checkpoints (`*.pt`) are attached to the GitHub releases as one zip
+per tag (`v1.0`: main, multiclass, gate v2, eps 0.2; `v2.0`: gate3_confirm,
+detect_v3, v4_confirm); unzip them into `runs/<tag>/`.
 
 ## Data
 
@@ -82,8 +96,10 @@ python bench_deploy.py
 ```
 
 The remaining experiments (gate v2, class-weighted loss, eps 0.2 training,
-realistic threat model) are run by `run_gate.ps1`, `run_cw.ps1` and the
-commands in the header of each script. Runs were made on one NVIDIA RTX 4050
+realistic threat model, third generation, detector, fourth generation) are
+run by `run_gate.ps1`, `run_cw.ps1`, `run_gate3.ps1`, `run_detect.ps1`,
+`run_v4.ps1` and the commands in the header of each script. Each protocol
+file was written before the corresponding models were trained. Runs were made on one NVIDIA RTX 4050
 laptop GPU; one AAM-TRANS run on CICIoT2023 takes about ten minutes.
 
 ## Threat model

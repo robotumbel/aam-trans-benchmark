@@ -124,4 +124,89 @@ chk("sixteen times", 16, dep.loc["aam_trans"].cpu1_b1_med_us / dep.loc["mlp"].cp
 mc = pd.read_csv(R("multiclass", "results.csv"))
 for ds, v in [("CICIoT2023", .033), ("CICIoMT2024", .026), ("TON_IoT", .016)]:
     r = diff(mc.assign(mode="binary"), ds, "pgd", .1); chk(f"multiclass {ds}", v, r.mean_diff, .0015); print("   wins", r.wins)
+
+
+# ======================= v3 and v4 studies ================================
+from analyze_detect import holm as holm1, signflip
+
+
+def flag(label, ok, info=""):
+    print(f"{'MATCH   ' if ok else 'MISMATCH'} {label} {info}")
+    if not ok:
+        bad.append(label)
+
+
+def pd_diff(df, ds, atk, eps, a, b):
+    g = df[(df.dataset == ds) & (df.attack == atk) & np.isclose(df.eps, eps)]
+    p = g.pivot_table(index="seed", columns="backbone", values="mcc")
+    return (p[a] - p[b]).dropna().values
+
+
+P4 = ["pgd", "pgd_constrained", "square", "transfer_tf"]
+# --- third generation (seeds 21-30)
+sel3 = pd.read_csv(R("gate3_select", "val_scores.csv")).groupby("backbone").val_pgd_mcc.mean()
+for bb, v in [("aam_v3b", .8567), ("aam_v3c", .8551), ("aam_v3a", .8535), ("aam_trans", .8568)]:
+    chk(f"v3 validation {bb}", v, sel3[bb], .00006)
+g3 = pd.read_csv(R("gate3_confirm", "results.csv"))
+xs = [pd_diff(g3, ds, a, .1, "aam_v3b", "aam_noGate") for a in P4 for ds in DS]
+flag("v3 all |diff| <= 0.0014", max(abs(x.mean()) for x in xs) <= .00145,
+     f"max {max(abs(x.mean()) for x in xs):.4f}")
+ph = holm1([signflip(x) for x in xs])
+chk("v3 smallest Holm p", .79, ph.min(), .006)
+for ds, v, w in [("CICIoT2023", .043, 10), ("TON_IoT", .022, 10), ("CICIoMT2024", .002, 10)]:
+    x = pd_diff(g3, ds, "pgd", .1, "aam_trans", "transformer")
+    chk(f"round 3 AAM-vanilla {ds}", v, x.mean(), .0006); flag(f"round 3 wins {ds}", (x > 0).sum() == w)
+x = pd_diff(g3, "CICIoT2023", "pgd", .2, "aam_trans", "transformer")
+chk("round 3 reversal", -.105, x.mean(), .0006); flag("round 3 reversal 0/10", (x > 0).sum() == 0)
+
+# --- detector (seeds 31-40)
+det = pd.read_csv(R("detect_v3", "detect.csv"))
+tst = pd.read_csv(R("detect_v3", "tests.csv"))
+prim = tst[tst.family == "primary"]
+flag("detector 15 of 18 significant", int((prim.p_holm < .05).sum()) == 15)
+chk("detector Holm p", .018, prim.p_holm.min(), .0006)
+au = det.pivot_table(index=["dataset", "attack"], columns="score", values="auroc")
+g = au.loc[[(d, a) for d in DS for a in ("pgd", "transfer_tf")], "gate"]
+chk("gate AUROC min (PGD, transfer)", .56, g.min(), .005); chk("gate AUROC max", .67, g.max(), .005)
+chk("gate TON constrained", .475, au.loc[("TON_IoT", "pgd_constrained"), "gate"], .0006)
+m = au.loc[[(d, a) for d in DS for a in ("pgd", "pgd_constrained", "transfer_tf")
+            if (d, a) != ("TON_IoT", "pgd_constrained")], "mahalanobis"]
+chk("Mahalanobis min", .65, m.min(), .005); chk("Mahalanobis max", .93, m.max(), .005)
+c = [(d, a) for d in DS for a in ("pgd", "pgd_constrained", "transfer_tf")]
+flag("Mahalanobis > gate in all other cells",
+     all(au.loc[k, "mahalanobis"] > au.loc[k, "gate"] for k in c if k != ("TON_IoT", "pgd_constrained")))
+gr = (au.loc[c, "gate"] - au.loc[c, "residual"]).abs().max()
+flag("gate vs residual about 0.01 or less", gr <= .0105, f"max {gr:.4f}")
+tp = det[(det.score == "gate") & det.attack.isin(["pgd", "pgd_constrained", "transfer_tf"])
+         ].groupby(["dataset", "attack"]).tpr5.mean()
+chk("TPR@5% min", .05, tp.min(), .005); chk("TPR@5% max", .08, tp.max(), .005)
+ad = au.xs("adaptive_l10", level="attack")["gate"]
+chk("adaptive AUROC min", .27, ad.min(), .005); chk("adaptive AUROC max", .38, ad.max(), .005)
+
+# --- fourth generation and FT control (seeds 41-50)
+sel4 = pd.read_csv(R("v4_select", "val_scores.csv")).groupby("backbone").val_pgd_mcc.mean()
+for bb, v in [("aam_v4d", .8572), ("aam_noGate", .8571), ("aam_trans", .8568), ("ft", .8553),
+              ("aam_v4a", .8548), ("aam_v4b", .8532), ("aam_v4c", .8529)]:
+    chk(f"v4 validation {bb}", v, sel4[bb], .00006)
+v4 = pd.read_csv(R("v4_confirm", "results.csv"))
+xs = [pd_diff(v4, ds, a, .1, "aam_v4d", "ft") for a in P4 + ["transfer_mlp"] for ds in DS]
+chk("v4 primary min diff", -.0003, min(x.mean() for x in xs), .00006)
+chk("v4 primary max diff", .0028, max(x.mean() for x in xs), .00006)
+ph = holm1([signflip(x) for x in xs])
+chk("v4 smallest Holm p", .31, ph.min(), .006); flag("v4 none significant", (ph >= .05).all())
+for ds, v in [("CICIoT2023", .038), ("TON_IoT", .023)]:
+    chk(f"FT-vanilla PGD {ds}", v, pd_diff(v4, ds, "pgd", .1, "ft", "transformer").mean(), .0006)
+for ds, v in [("CICIoT2023", .001), ("TON_IoT", -.002)]:
+    chk(f"AAM-FT PGD {ds}", v, pd_diff(v4, ds, "pgd", .1, "aam_trans", "ft").mean(), .0006)
+for atk, e in [("transfer_tf", .1), ("transfer_mlp", .1), ("clean", 0)]:
+    x = pd_diff(v4, "CICIoT2023", atk, e, "aam_noGate", "ft")
+    chk(f"noGate-FT {atk} CICIoT", .004, x.mean(), .0006); flag(f"noGate-FT {atk} 10/10", (x > 0).sum() == 10)
+chk("AAM-FT transfer_tf CICIoT", .003, pd_diff(v4, "CICIoT2023", "transfer_tf", .1, "aam_trans", "ft").mean(), .0006)
+x = pd_diff(v4, "CICIoT2023", "pgd", .2, "ft", "transformer")
+chk("FT reversal", -.113, x.mean(), .0006); flag("FT reversal 0/10", (x > 0).sum() == 0)
+for ds, v, w in [("CICIoT2023", .040, 10), ("TON_IoT", .021, 10), ("CICIoMT2024", .003, 9)]:
+    x = pd_diff(v4, ds, "pgd", .1, "aam_trans", "transformer")
+    chk(f"round 4 AAM-vanilla {ds}", v, x.mean(), .0006); flag(f"round 4 wins {ds}", (x > 0).sum() == w)
+x = pd_diff(v4, "CICIoT2023", "pgd", .2, "aam_trans", "transformer")
+chk("round 4 reversal", -.108, x.mean(), .0006); flag("round 4 reversal 0/10", (x > 0).sum() == 0)
 print("\nMISMATCHES:", bad if bad else "none")

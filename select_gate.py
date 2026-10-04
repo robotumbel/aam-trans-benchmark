@@ -35,7 +35,10 @@ EPS = 0.10
 def main(a):
     dev = torch.device("cpu" if a.cpu or not torch.cuda.is_available() else "cuda")
     torch.backends.cuda.matmul.allow_tf32 = True
-    out_dir = os.path.join(HERE, "runs", "gate_select" + ("_smoke" if a.smoke else ""))
+    global CANDIDATES
+    if a.candidates:
+        CANDIDATES = a.candidates
+    out_dir = os.path.join(HERE, "runs", a.tag + ("_smoke" if a.smoke else ""))
     os.makedirs(out_dir, exist_ok=True)
     path = os.path.join(out_dir, "val_scores.csv")
     done = set()
@@ -87,4 +90,7 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--smoke", action="store_true")
     ap.add_argument("--cpu", action="store_true")
+    ap.add_argument("--candidates", nargs="+", default=None,
+                    help="backbones to compare (default: the gate v2 set)")
+    ap.add_argument("--tag", default="gate_select", help="output folder under runs/")
     main(ap.parse_args())

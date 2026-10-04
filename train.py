@@ -111,6 +111,9 @@ def train(model, s, device, method="trades", epochs=20, eps=0.1, steps=7,
             if rec is not None:
                 src = xa if method == "pgdat" else x
                 loss = loss + lam_aux * F.mse_loss(rec, src)
+            if getattr(model, "use_loo", False):
+                # v3a/v4b: train the leave-one-out predictor on clean inputs
+                loss = loss + 0.1 * F.mse_loss(model.loo_predict(x), x)
             if not torch.isfinite(loss):
                 raise FloatingPointError(f"non-finite loss at epoch {ep+1}")
             opt.zero_grad(set_to_none=True)

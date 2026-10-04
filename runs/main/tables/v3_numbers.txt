@@ -1,0 +1,92 @@
+validation PGD MCC (selection):
+backbone
+aam_trans    0.8568
+aam_v3b      0.8567
+aam_v3c      0.8551
+aam_v3a      0.8535
+
+H_v3 (v3b - noGate), one-sided, Holm over 12:
+  pgd              CICIoT2023   +0.0005 4/10 p=0.2402 holm=1.0000
+  pgd              CICIoMT2024  +0.0001 4/10 p=0.3730 holm=1.0000
+  pgd              TON_IoT      -0.0010 6/10 p=0.5527 holm=1.0000
+  pgd_constrained  CICIoT2023   +0.0006 7/10 p=0.1768 holm=1.0000
+  pgd_constrained  CICIoMT2024  -0.0000 4/10 p=0.5186 holm=1.0000
+  pgd_constrained  TON_IoT      -0.0014 4/10 p=0.5850 holm=1.0000
+  square           CICIoT2023   +0.0004 4/10 p=0.4062 holm=1.0000
+  square           CICIoMT2024  +0.0001 2/10 p=0.4531 holm=1.0000
+  square           TON_IoT      -0.0009 5/10 p=0.5391 holm=1.0000
+  transfer_tf      CICIoT2023   +0.0009 7/10 p=0.0654 holm=0.7852
+  transfer_tf      CICIoMT2024  +0.0001 6/10 p=0.2754 holm=1.0000
+  transfer_tf      TON_IoT      -0.0012 4/10 p=0.6172 holm=1.0000
+Masking (v3) $-$ no gate     clean            -0.0001 (5/10, holm 1.0000)  +0.0001 (5/10, holm 1.0000)  -0.0009 (5/10, holm 1.0000)
+Masking (v3) $-$ gate v1     pgd              +0.0015 (6/10, holm 0.4102)  -0.0002 (4/10, holm 0.4492)  -0.0000 (3/10, holm 0.9863)
+Gate v1 $-$ no gate          pgd              -0.0010 (4/10, holm 0.8555)  +0.0003 (6/10, holm 0.8555)  -0.0010 (6/10, holm 0.8555)
+AAM-TRANS (v1) $-$ vanilla   pgd              +0.0430 (10/10, holm 0.0059)  +0.0019 (10/10, holm 0.0059)  +0.0222 (10/10, holm 0.0059)
+AAM-TRANS (v1) $-$ vanilla   pgd_constrained  +0.0428 (10/10, holm 0.0059)  +0.0016 (9/10, holm 0.0059)  +0.0210 (10/10, holm 0.0059)
+v3b-noGate PGD eps 0.05: +0.0006 (3/10, p2 0.479)  +0.0002 (7/10, p2 0.354)  -0.0013 (6/10, p2 0.904)
+v1-vanilla PGD eps 0.05: +0.0310 (10/10)  +0.0014 (9/10)  +0.0213 (10/10)
+v3b-noGate PGD eps 0.2: -0.0016 (3/10, p2 0.717)  +0.0017 (8/10, p2 0.021)  +0.0002 (6/10, p2 0.979)
+v1-vanilla PGD eps 0.2: -0.1049 (0/10)  +0.0086 (10/10)  +0.0029 (8/10)
+
+Detection: primary tests
+    dataset          attack     test     gate      diff  wins   p_holm
+CICIoMT2024             pgd gate>0.5 0.624263  0.124263    10 0.017578
+CICIoMT2024             pgd gate>msp 0.624263  0.069173    10 0.017578
+CICIoMT2024 pgd_constrained gate>0.5 0.561600  0.061600    10 0.017578
+CICIoMT2024 pgd_constrained gate>msp 0.561600  0.021357     9 0.017578
+CICIoMT2024     transfer_tf gate>0.5 0.673914  0.173914    10 0.017578
+CICIoMT2024     transfer_tf gate>msp 0.673914  0.159699    10 0.017578
+ CICIoT2023             pgd gate>0.5 0.622420  0.122420    10 0.017578
+ CICIoT2023             pgd gate>msp 0.622420  0.090936    10 0.017578
+ CICIoT2023 pgd_constrained gate>0.5 0.543059  0.043059    10 0.017578
+ CICIoT2023 pgd_constrained gate>msp 0.543059  0.019680    10 0.017578
+ CICIoT2023     transfer_tf gate>0.5 0.660452  0.160452    10 0.017578
+ CICIoT2023     transfer_tf gate>msp 0.660452  0.153931    10 0.017578
+    TON_IoT             pgd gate>0.5 0.559931  0.059931    10 0.017578
+    TON_IoT             pgd gate>msp 0.559931 -0.004351     4 1.000000
+    TON_IoT pgd_constrained gate>0.5 0.474626 -0.025374     0 1.000000
+    TON_IoT pgd_constrained gate>msp 0.474626 -0.070107     0 1.000000
+    TON_IoT     transfer_tf gate>0.5 0.574116  0.074116    10 0.017578
+    TON_IoT     transfer_tf gate>msp 0.574116  0.043766    10 0.017578
+
+Detection: secondary
+    dataset          attack             test      diff  wins        p
+CICIoMT2024             pgd    gate>residual -0.003383     0 1.000000
+CICIoMT2024             pgd gate>mahalanobis -0.150990     0 1.000000
+CICIoMT2024 pgd_constrained    gate>residual -0.002730     0 1.000000
+CICIoMT2024 pgd_constrained gate>mahalanobis -0.154948     0 1.000000
+CICIoMT2024     transfer_tf    gate>residual -0.008908     0 1.000000
+CICIoMT2024     transfer_tf gate>mahalanobis -0.255746     0 1.000000
+ CICIoT2023             pgd    gate>residual  0.005562    10 0.000977
+ CICIoT2023             pgd gate>mahalanobis -0.128953     0 1.000000
+ CICIoT2023 pgd_constrained    gate>residual  0.002931    10 0.000977
+ CICIoT2023 pgd_constrained gate>mahalanobis -0.128706     0 1.000000
+ CICIoT2023     transfer_tf    gate>residual  0.002634     8 0.006836
+ CICIoT2023     transfer_tf gate>mahalanobis -0.249866     0 1.000000
+    TON_IoT             pgd    gate>residual -0.006630     0 1.000000
+    TON_IoT             pgd gate>mahalanobis -0.085936     0 1.000000
+    TON_IoT pgd_constrained    gate>residual -0.001082     0 1.000000
+    TON_IoT pgd_constrained gate>mahalanobis -0.002977     1 0.996094
+    TON_IoT     transfer_tf    gate>residual -0.010187     0 1.000000
+    TON_IoT     transfer_tf gate>mahalanobis -0.133306     0 1.000000
+
+                             auroc_success  clean_mcc  mcc_attacked
+dataset     attack                                                 
+CICIoMT2024 adaptive_l1              0.737      0.989         0.987
+            adaptive_l10             0.693      0.989         0.987
+            gaussian                   NaN      0.989         0.989
+            pgd                      0.758      0.989         0.987
+            pgd_constrained          0.792      0.989         0.987
+            transfer_tf              0.779      0.989         0.988
+CICIoT2023  adaptive_l1              0.514      0.794         0.753
+            adaptive_l10             0.374      0.794         0.757
+            gaussian                 0.719      0.794         0.783
+            pgd                      0.711      0.794         0.752
+            pgd_constrained          0.651      0.794         0.756
+            transfer_tf              0.728      0.794         0.764
+TON_IoT     adaptive_l1              0.760      0.970         0.968
+            adaptive_l10             0.676      0.970         0.968
+            gaussian                 0.748      0.970         0.969
+            pgd                      0.778      0.970         0.968
+            pgd_constrained          0.809      0.970         0.969
+            transfer_tf              0.779      0.970         0.969

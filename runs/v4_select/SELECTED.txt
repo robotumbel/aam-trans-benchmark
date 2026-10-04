@@ -1,0 +1,10 @@
+aam_v4d
+beats_v1=True
+backbone
+aam_v4d       0.857198
+aam_noGate    0.857060
+aam_trans     0.856755
+ft            0.855337
+aam_v4a       0.854757
+aam_v4b       0.853195
+aam_v4c       0.852865

@@ -1,0 +1,7 @@
+aam_v3b
+beats_v1=False
+backbone
+aam_trans    0.856755
+aam_v3b      0.856677
+aam_v3c      0.855071
+aam_v3a      0.853542
