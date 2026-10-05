@@ -1,7 +1,7 @@
-# AAM-TRANS: per-feature token representations and adversarial robustness in IoT intrusion detection
+# Per-feature tokens, not adaptive attention: Transformer backbones for IoT intrusion detection under adversarial training
 
 Code, protocol, per-seed results and trained models for the manuscript
-*AAM-TRANS: Per-Feature Token Representations Drive Adversarial Robustness in Transformer-Based IoT Intrusion Detection* (E. A. Winanto, M. Y. Idris, F. T. Ramadhanti).
+*Per-Feature Tokens, Not Adaptive Attention: A Controlled Study of Transformer Backbones for IoT Intrusion Detection under Adversarial Training* (E. A. Winanto, M. Y. Idris, F. T. Ramadhanti).
 
 AAM-TRANS (Adaptive Attention Mechanism Transformer) is a tabular Transformer
 with a per-feature tokeniser, a learned positional encoding, a per-head
@@ -11,10 +11,13 @@ FT-Transformer-style control, under identical TRADES and PGD adversarial
 training, on deduplicated CICIoT2023, CICIoMT2024 and TON_IoT data, with ten
 seeds per configuration and three further rounds of ten new seeds.
 
-Main findings: per-feature tokens raise robust MCC by 0.02 to 0.05 over the
-vanilla Transformer; the FT-Transformer-style control is as robust as
-AAM-TRANS; eleven adaptive attention designs from four generations add no
-robustness; a perturbation-aware token gate detects attacked inputs better
+Main findings: per-feature tokens raise MCC by 0.02 to 0.05 over the vanilla
+Transformer, with and without attack; the FT-Transformer-style control
+performs the same as AAM-TRANS; a tokeniser-by-position factorial traces the
+gain to per-feature embedding weights; most of the gain is clean accuracy
+that persists under attack, and the loss under attack is smaller on
+CICIoT2023 only; eleven attention and gating designs from four generations
+add nothing; a perturbation-aware token gate detects attacked inputs better
 than softmax confidence but worse than a Mahalanobis detector.
 
 ## Layout
@@ -35,7 +38,8 @@ than softmax confidence but worse than a Mahalanobis detector.
 | `diag_deadclass.py` | separability check for rarely predicted CICIoT2023 classes (kNN, random forest) |
 | `eval_realistic.py` | attacker-controllable-feature threat model evaluated on the saved checkpoints |
 | `bench_deploy.py` | single-thread CPU latency, int8, model size, MACs |
-| `verify_claims.py` | recomputes every number quoted in the manuscript from the per-seed results and reports MATCH / MISMATCH |
+| `PROTOCOL_V5.md`, `run_v5.ps1`, `analyze_v5.py`, `make_tables_v5.py`, `eval_strong.py` | FT-style control on seeds 1 to 10 (TRADES, PGD-AT, multiclass), tokeniser-by-position factorial, loss under attack (clean minus PGD), PGD-100 with restarts and Square with 5,000 queries on saved checkpoints |
+| `verify_claims.py` | recomputes every number quoted in the manuscript from the per-seed results and reports MATCH / MISMATCH (run `analyze_v5.py` first) |
 | `run_all.ps1`, `run_gate.ps1`, `run_cw.ps1` | the exact command sequence used for the reported runs |
 | `figs/fig_arch.tex` | TikZ source of the architecture figure |
 
@@ -55,13 +59,16 @@ LaTeX tables used in the manuscript.
 | `gate3_select`, `gate3_confirm` | third-generation selection (validation) and confirmation (seeds 21 to 30) |
 | `detect_v3` | detection scores per dataset, seed, attack and score (seeds 31 to 40), with the tests |
 | `v4_select`, `v4_confirm` | fourth-generation selection (validation) and confirmation with the FT-style control (seeds 41 to 50) |
+| `factorial` | tokeniser-by-position factorial, seven cells, CICIoT2023 and TON_IoT, seeds 1 to 10 |
+| `strong` | stronger attacks on the `v4_confirm` checkpoints |
 | `train_eps02` | TRADES trained at eps 0.2 (CICIoT2023, TON_IoT) |
 | `realistic` | attacker-controllable-feature attack on the `main` checkpoints |
 | `deploy.csv`, `diag_deadclass.csv` | inference cost; dead-class diagnostics |
 
 Trained checkpoints (`*.pt`) are attached to the GitHub releases as one zip
 per tag (`v1.0`: main, multiclass, gate v2, eps 0.2; `v2.0`: gate3_confirm,
-detect_v3, v4_confirm); unzip them into `runs/<tag>/`.
+detect_v3, v4_confirm; `v3.0`: FT-style control on seeds 1 to 10 in main and
+multiclass); unzip them into `runs/<tag>/`.
 
 ## Data
 

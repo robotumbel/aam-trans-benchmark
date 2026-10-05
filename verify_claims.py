@@ -209,4 +209,114 @@ for ds, v, w in [("CICIoT2023", .040, 10), ("TON_IoT", .021, 10), ("CICIoMT2024"
     chk(f"round 4 AAM-vanilla {ds}", v, x.mean(), .0006); flag(f"round 4 wins {ds}", (x > 0).sum() == w)
 x = pd_diff(v4, "CICIoT2023", "pgd", .2, "aam_trans", "transformer")
 chk("round 4 reversal", -.108, x.mean(), .0006); flag("round 4 reversal 0/10", (x > 0).sum() == 0)
+
+# ======================= v5: FT on seeds 1-10, factorial, strong attacks ====
+T = pd.read_csv(R("v5_tests.csv"))     # written by analyze_v5.py
+
+
+def t(part, tag, method, ds, a, b, outcome):
+    q = T[(T.part == part) & (T.tag == tag) & (T.method == method) & (T.dataset == ds)
+          & (T.a == a) & (T.b == b) & (T.outcome == outcome)]
+    assert len(q) == 1, (part, tag, method, ds, a, b, outcome, len(q))
+    return q.iloc[0]
+
+
+M = lambda ds, a, b, o, meth="trades": t("rounds", "main", meth, ds, a, b, o)
+# main comparison with the FT-style control
+chk("ft clean CICIoT", .792, M("CICIoT2023", "ft", "transformer", "clean").mean_a, .0006)
+chk("ft clean TON", .972, M("TON_IoT", "ft", "transformer", "clean").mean_a, .0006)
+for ds, v in [("CICIoT2023", .042), ("TON_IoT", .026)]:
+    r = M(ds, "ft", "transformer", "pgd"); chk(f"ft-vanilla PGD {ds}", v, r["diff"], .0006)
+    flag(f"ft-vanilla PGD 10/10 {ds}", r.wins == 10)
+d_af = [M(ds, "aam_trans", "ft", "pgd")["diff"] for ds in DS]
+chk("AAM-ft PGD min", -.0003, min(d_af), .00006); chk("AAM-ft PGD max", .0006, max(d_af), .00006)
+flag("AAM-ft PGD none significant", all(M(ds, "aam_trans", "ft", "pgd").p_holm >= .05 for ds in DS))
+# loss under attack
+r = M("CICIoT2023", "aam_trans", "transformer", "L")
+chk("L vanilla CICIoT", .059, r.mean_b, .0006); chk("L AAM CICIoT", .042, r.mean_a, .0006)
+La = [-t("rounds", tg, me, "CICIoT2023", "aam_trans", "transformer", "L")["diff"]
+      for tg, me in [("main", "trades"), ("main", "pgdat"), ("gate_confirm", "trades"),
+                     ("gate3_confirm", "trades"), ("v4_confirm", "trades")]]
+chk("L diff AAM min", .017, min(La), .0006); chk("L diff AAM max", .019, max(La), .0006)
+Lf = [-t("rounds", tg, me, "CICIoT2023", "ft", "transformer", "L")["diff"]
+      for tg, me in [("main", "trades"), ("main", "pgdat"), ("v4_confirm", "trades")]]
+chk("L diff FT min", .018, min(Lf), .0006); chk("L diff FT max", .020, max(Lf), .0006)
+oth = T[(T.part == "rounds") & (T.outcome == "L") & (T.dataset != "CICIoT2023")]
+flag("L <= 0.007 on the other binary tasks", max(oth.mean_a.max(), oth.mean_b.max()) <= .0075,
+     f"max {max(oth.mean_a.max(), oth.mean_b.max()):.4f}")
+chk("clean lead CICIoT", .025, M("CICIoT2023", "aam_trans", "transformer", "clean")["diff"], .0006)
+chk("clean lead TON", .025, M("TON_IoT", "aam_trans", "transformer", "clean")["diff"], .0006)
+# factorial
+F = lambda ds, a, o: t("factorial", "factorial", "trades", ds, a, "transformer", o)
+for a, c, v in [("grp_learn", "CICIoT2023", .710), ("grp_learn", "TON_IoT", .944),
+                ("shared_learn", "CICIoT2023", .712), ("shared_learn", "TON_IoT", .952),
+                ("shared_none", "CICIoT2023", .252), ("shared_none", "TON_IoT", .851),
+                ("ft_nobias", "CICIoT2023", .747), ("ft_nobias", "TON_IoT", .952),
+                ("ft_learn", "CICIoT2023", .752), ("ft_learn", "TON_IoT", .966),
+                ("ft_sin", "CICIoT2023", .712), ("ft_sin", "TON_IoT", .943)]:
+    chk(f"factorial PGD {a} {c}", v, F(c, a, "pgd").mean_a, .0006)
+chk("factorial ft PGD TON", .970, M("TON_IoT", "ft", "transformer", "pgd").mean_a, .0006)
+flag("shared_learn PGD not different from vanilla",
+     all(F(c, "shared_learn", "pgd").p_holm >= .05 for c in ("CICIoT2023", "TON_IoT")))
+flag("grp_none worse on CICIoT", F("CICIoT2023", "grp_none", "pgd")["diff"] < 0)
+chk("factorial L group", .059, F("CICIoT2023", "grp_learn", "L").mean_a, .0006)
+chk("factorial L ft_nobias", .037, F("CICIoT2023", "ft_nobias", "L").mean_a, .0006)
+chk("factorial L ft_learn", .040, F("CICIoT2023", "ft_learn", "L").mean_a, .0006)
+chk("factorial L shared_learn", .046, F("CICIoT2023", "shared_learn", "L").mean_a, .0006)
+# replication rounds
+for tg, a, b in [("gate_confirm", .046, .025), ("gate3_confirm", .043, .022), ("v4_confirm", .040, .021)]:
+    chk(f"{tg} CICIoT", a, t("rounds", tg, "trades", "CICIoT2023", "aam_trans", "transformer", "pgd")["diff"], .0006)
+    chk(f"{tg} TON", b, t("rounds", tg, "trades", "TON_IoT", "aam_trans", "transformer", "pgd")["diff"], .0006)
+# PGD-AT with the control
+for ds, v, w in [("CICIoT2023", .034, 10), ("TON_IoT", .013, 8)]:
+    r = M(ds, "ft", "transformer", "pgd", "pgdat"); chk(f"PGD-AT ft-vanilla {ds}", v, r["diff"], .0006)
+    flag(f"PGD-AT ft wins {ds}", r.wins == w)
+chk("PGD-AT AAM-ft CICIoT", -.002, M("CICIoT2023", "aam_trans", "ft", "pgd", "pgdat")["diff"], .0006)
+chk("PGD-AT AAM-ft TON", .005, M("TON_IoT", "aam_trans", "ft", "pgd", "pgdat")["diff"], .0006)
+for meth, v in [("trades", -.116), ("pgdat", -.148)]:
+    x = pd_diff(main[(main["mode"] == "binary") & (main.method == meth)], "CICIoT2023", "pgd", .2,
+                "ft", "transformer")
+    chk(f"ft reversal {meth}", v, x.mean(), .0006); flag(f"ft reversal 0/10 {meth}", (x > 0).sum() == 0)
+# multiclass
+X = lambda ds, a, b, o: t("multiclass", "multiclass", "trades", ds, a, b, o)
+for ds, v, w in [("CICIoT2023", .036, 10), ("CICIoMT2024", .026, 10), ("TON_IoT", .006, 5)]:
+    r = X(ds, "ft", "transformer", "pgd"); chk(f"mc ft-vanilla {ds}", v, r["diff"], .0006)
+    flag(f"mc ft wins {ds}", r.wins == w)
+cl = [X(ds, a, "transformer", "clean")["diff"] for ds in DS for a in ("ft", "aam_trans")]
+chk("mc clean lead min", .017, min(cl), .0006); chk("mc clean lead max", .051, max(cl), .0006)
+chk("mc L AAM CICIoT", -.015, X("CICIoT2023", "aam_trans", "transformer", "L")["diff"], .0006)
+chk("mc L ft CICIoT", -.019, X("CICIoT2023", "ft", "transformer", "L")["diff"], .0006)
+r = X("TON_IoT", "aam_trans", "transformer", "L"); chk("mc L AAM TON", .079, r.mean_a, .0006)
+chk("mc L vanilla TON", .045, r.mean_b, .0006)
+chk("mc L ft TON", .090, X("TON_IoT", "ft", "transformer", "L").mean_a, .0006)
+flag("mc AAM-ft none significant", all(X(ds, "aam_trans", "ft", "pgd").p_holm >= .05 for ds in DS))
+# stronger attacks
+sg = pd.read_csv(R("strong", "results.csv"))
+for ds, vf, va in [("CICIoT2023", .037, .038), ("TON_IoT", .022, .021)]:
+    p = sg[sg.dataset == ds].pivot_table(index="seed", columns="backbone", values="pgd100r5")
+    chk(f"strong ft-vanilla {ds}", vf, (p.ft - p.transformer).mean(), .0006)
+    chk(f"strong AAM-vanilla {ds}", va, (p.aam_trans - p.transformer).mean(), .0006)
+gm = sg.groupby(["dataset", "backbone"])[["pgd20", "pgd100r5", "pgd20_sq", "square5000"]].mean()
+flag("PGD-100 within 0.001 of PGD-20 (means)", (gm.pgd20 - gm.pgd100r5).abs().max() <= .001)
+flag("Square-5000 within 0.001 of PGD-20 (means)", (gm.pgd20_sq - gm.square5000).abs().max() <= .001)
+# attacker-controllable features, control
+rt = real[real.method == "trades"]
+ps = []
+for ds in DS:
+    for e in (.1, .2, .5):
+        p = rt[(rt.dataset == ds) & np.isclose(rt.eps, e)].pivot_table(index="seed", columns="backbone", values="mcc")
+        x = (p.ft - p.transformer).values
+        ps.append(min(1, 2 * min(signflip(x), signflip(-x))))
+        flag(f"realistic ft > vanilla {ds} {e}", x.mean() > 0)
+flag("realistic ft: 7 of 9 significant", int((holm1(ps) < .05).sum()) == 7)
+# error rates under PGD and latency of the control
+mb = main[(main["mode"] == "binary") & (main.method == "trades") & (main.attack == "pgd") & np.isclose(main.eps, .1)]
+for ds, v, f_ in [("CICIoT2023", 12.9, 10.7), ("TON_IoT", 2.7, 1.5)]:
+    g = mb[mb.dataset == ds].groupby("backbone").acc.mean()
+    chk(f"error vanilla {ds} (%)", v, 100 * (1 - g.transformer), .06)
+    chk(f"error ft {ds} (%)", f_, 100 * (1 - g.ft), .06)
+d5 = pd.read_csv(R("deploy_v5.csv")).set_index("backbone").cpu1_b1_med_us / 1e3
+chk("latency ft", .90, d5.ft, .006); chk("latency noGate (v5 run)", .90, d5.aam_noGate, .006)
+chk("latency vanilla (v5 run)", .65, d5.transformer, .006); chk("latency AAM (v5 run)", 1.12, d5.aam_trans, .006)
+chk("ft / vanilla latency", 1.39, d5.ft / d5.transformer, .006)
 print("\nMISMATCHES:", bad if bad else "none")

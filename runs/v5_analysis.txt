@@ -1,0 +1,292 @@
+
+===== rounds =====
+          tag method     dataset         a           b outcome  n  mean_a  mean_b    diff  wins      p  p_holm
+         main trades  CICIoT2023 aam_trans transformer   clean 10  0.7934  0.7681  0.0253    10 0.0020  0.0059
+         main trades  CICIoT2023 aam_trans transformer     pgd 10  0.7517  0.7096  0.0421    10 0.0020  0.0059
+         main trades  CICIoT2023 aam_trans transformer       L 10  0.0418  0.0585 -0.0168     0 0.0020  0.0059
+         main trades  CICIoT2023        ft transformer   clean 10  0.7921  0.7681  0.0240    10 0.0020  0.0059
+         main trades  CICIoT2023        ft transformer     pgd 10  0.7520  0.7096  0.0424    10 0.0020  0.0059
+         main trades  CICIoT2023        ft transformer       L 10  0.0401  0.0585 -0.0184     0 0.0020  0.0059
+         main trades  CICIoT2023 aam_trans          ft   clean 10  0.7934  0.7921  0.0013     8 0.0195  0.0586
+         main trades  CICIoT2023 aam_trans          ft     pgd 10  0.7517  0.7520 -0.0003     5 0.7500  1.0000
+         main trades  CICIoT2023 aam_trans          ft       L 10  0.0418  0.0401  0.0016     8 0.2539  0.7617
+         main trades CICIoMT2024 aam_trans transformer   clean 10  0.9893  0.9873  0.0020     9 0.0078  0.0078
+         main trades CICIoMT2024 aam_trans transformer     pgd 10  0.9877  0.9855  0.0022     9 0.0039  0.0059
+         main trades CICIoMT2024 aam_trans transformer       L 10  0.0015  0.0018 -0.0002     4 0.3789  0.3789
+         main trades CICIoMT2024        ft transformer   clean 10  0.9889  0.9873  0.0016     6 0.1152  0.1152
+         main trades CICIoMT2024        ft transformer     pgd 10  0.9877  0.9855  0.0022     8 0.0078  0.0078
+         main trades CICIoMT2024        ft transformer       L 10  0.0013  0.0018 -0.0005     2 0.0430  0.0859
+         main trades CICIoMT2024 aam_trans          ft   clean 10  0.9893  0.9889  0.0003     7 0.1367  0.2734
+         main trades CICIoMT2024 aam_trans          ft     pgd 10  0.9877  0.9877  0.0001     6 0.8691  1.0000
+         main trades CICIoMT2024 aam_trans          ft       L 10  0.0015  0.0013  0.0003     8 0.2578  0.7617
+         main trades     TON_IoT aam_trans transformer   clean 10  0.9717  0.9467  0.0250    10 0.0020  0.0059
+         main trades     TON_IoT aam_trans transformer     pgd 10  0.9707  0.9447  0.0260    10 0.0020  0.0059
+         main trades     TON_IoT aam_trans transformer       L 10  0.0010  0.0021 -0.0011     1 0.0059  0.0117
+         main trades     TON_IoT        ft transformer   clean 10  0.9717  0.9467  0.0249    10 0.0020  0.0059
+         main trades     TON_IoT        ft transformer     pgd 10  0.9702  0.9447  0.0255    10 0.0020  0.0059
+         main trades     TON_IoT        ft transformer       L 10  0.0015  0.0021 -0.0005     3 0.4258  0.4258
+         main trades     TON_IoT aam_trans          ft   clean 10  0.9717  0.9717  0.0000     4 0.9883  0.9883
+         main trades     TON_IoT aam_trans          ft     pgd 10  0.9707  0.9702  0.0006     4 0.7559  1.0000
+         main trades     TON_IoT aam_trans          ft       L 10  0.0010  0.0015 -0.0006     4 0.3691  0.7617
+         main  pgdat  CICIoT2023 aam_trans transformer   clean 10  0.7839  0.7690  0.0149     9 0.0059  0.0176
+         main  pgdat  CICIoT2023 aam_trans transformer     pgd 10  0.7576  0.7258  0.0318    10 0.0020  0.0059
+         main  pgdat  CICIoT2023 aam_trans transformer       L 10  0.0263  0.0432 -0.0169     0 0.0020  0.0059
+         main  pgdat  CICIoT2023        ft transformer   clean 10  0.7828  0.7690  0.0138     9 0.0059  0.0117
+         main  pgdat  CICIoT2023        ft transformer     pgd 10  0.7596  0.7258  0.0338    10 0.0020  0.0039
+         main  pgdat  CICIoT2023        ft transformer       L 10  0.0232  0.0432 -0.0200     0 0.0020  0.0039
+         main  pgdat  CICIoT2023 aam_trans          ft   clean 10  0.7839  0.7828  0.0011     6 0.7168  0.7168
+         main  pgdat  CICIoT2023 aam_trans          ft     pgd 10  0.7576  0.7596 -0.0020     4 0.5098  0.5098
+         main  pgdat  CICIoT2023 aam_trans          ft       L 10  0.0263  0.0232  0.0031     7 0.0879  0.1758
+         main  pgdat CICIoMT2024 aam_trans transformer   clean 10  0.9905  0.9902  0.0002     7 0.2637  0.2637
+         main  pgdat CICIoMT2024 aam_trans transformer     pgd 10  0.9891  0.9881  0.0010     9 0.0059  0.0078
+         main  pgdat CICIoMT2024 aam_trans transformer       L 10  0.0014  0.0021 -0.0008     1 0.0039  0.0078
+         main  pgdat     TON_IoT aam_trans transformer   clean 10  0.9747  0.9601  0.0146     9 0.0059  0.0176
+         main  pgdat     TON_IoT aam_trans transformer     pgd 10  0.9708  0.9532  0.0176     9 0.0039  0.0078
+         main  pgdat     TON_IoT aam_trans transformer       L 10  0.0039  0.0068 -0.0030     3 0.2812  0.2812
+         main  pgdat     TON_IoT        ft transformer   clean 10  0.9698  0.9601  0.0097     9 0.0645  0.0645
+         main  pgdat     TON_IoT        ft transformer     pgd 10  0.9664  0.9532  0.0131     8 0.0215  0.0215
+         main  pgdat     TON_IoT        ft transformer       L 10  0.0034  0.0068 -0.0034     3 0.0664  0.0664
+         main  pgdat     TON_IoT aam_trans          ft   clean 10  0.9747  0.9698  0.0049     7 0.1113  0.2227
+         main  pgdat     TON_IoT aam_trans          ft     pgd 10  0.9708  0.9664  0.0045     7 0.1309  0.2617
+         main  pgdat     TON_IoT aam_trans          ft       L 10  0.0039  0.0034  0.0004     7 0.8242  0.8242
+ gate_confirm trades  CICIoT2023 aam_trans transformer   clean 10  0.7924  0.7655  0.0269    10 0.0020  0.0059
+ gate_confirm trades  CICIoT2023 aam_trans transformer     pgd 10  0.7501  0.7045  0.0456    10 0.0020  0.0059
+ gate_confirm trades  CICIoT2023 aam_trans transformer       L 10  0.0423  0.0610 -0.0187     0 0.0020  0.0059
+ gate_confirm trades CICIoMT2024 aam_trans transformer   clean 10  0.9899  0.9881  0.0018    10 0.0020  0.0059
+ gate_confirm trades CICIoMT2024 aam_trans transformer     pgd 10  0.9881  0.9864  0.0017    10 0.0020  0.0059
+ gate_confirm trades CICIoMT2024 aam_trans transformer       L 10  0.0018  0.0017  0.0001     5 0.7578  0.7578
+ gate_confirm trades     TON_IoT aam_trans transformer   clean 10  0.9704  0.9467  0.0237    10 0.0020  0.0059
+ gate_confirm trades     TON_IoT aam_trans transformer     pgd 10  0.9693  0.9446  0.0247    10 0.0020  0.0059
+ gate_confirm trades     TON_IoT aam_trans transformer       L 10  0.0011  0.0020 -0.0010     3 0.0332  0.0664
+gate3_confirm trades  CICIoT2023 aam_trans transformer   clean 10  0.7920  0.7681  0.0239    10 0.0020  0.0059
+gate3_confirm trades  CICIoT2023 aam_trans transformer     pgd 10  0.7516  0.7086  0.0430    10 0.0020  0.0059
+gate3_confirm trades  CICIoT2023 aam_trans transformer       L 10  0.0404  0.0595 -0.0191     0 0.0020  0.0059
+gate3_confirm trades CICIoMT2024 aam_trans transformer   clean 10  0.9900  0.9887  0.0013    10 0.0020  0.0059
+gate3_confirm trades CICIoMT2024 aam_trans transformer     pgd 10  0.9887  0.9868  0.0019    10 0.0020  0.0059
+gate3_confirm trades CICIoMT2024 aam_trans transformer       L 10  0.0013  0.0019 -0.0006     1 0.0273  0.0547
+gate3_confirm trades     TON_IoT aam_trans transformer   clean 10  0.9702  0.9499  0.0204    10 0.0020  0.0059
+gate3_confirm trades     TON_IoT aam_trans transformer     pgd 10  0.9684  0.9462  0.0222    10 0.0020  0.0059
+gate3_confirm trades     TON_IoT aam_trans transformer       L 10  0.0018  0.0036 -0.0018     2 0.4961  0.4961
+   v4_confirm trades  CICIoT2023 aam_trans transformer   clean 10  0.7936  0.7710  0.0225    10 0.0020  0.0059
+   v4_confirm trades  CICIoT2023 aam_trans transformer     pgd 10  0.7529  0.7131  0.0398    10 0.0020  0.0059
+   v4_confirm trades  CICIoT2023 aam_trans transformer       L 10  0.0407  0.0580 -0.0173     0 0.0020  0.0059
+   v4_confirm trades  CICIoT2023        ft transformer   clean 10  0.7915  0.7710  0.0204    10 0.0020  0.0059
+   v4_confirm trades  CICIoT2023        ft transformer     pgd 10  0.7514  0.7131  0.0384    10 0.0020  0.0059
+   v4_confirm trades  CICIoT2023        ft transformer       L 10  0.0400  0.0580 -0.0179     0 0.0020  0.0059
+   v4_confirm trades  CICIoT2023 aam_trans          ft   clean 10  0.7936  0.7915  0.0021     9 0.0117  0.0352
+   v4_confirm trades  CICIoT2023 aam_trans          ft     pgd 10  0.7529  0.7514  0.0014     6 0.1367  0.4102
+   v4_confirm trades  CICIoT2023 aam_trans          ft       L 10  0.0407  0.0400  0.0007     7 0.5039  1.0000
+   v4_confirm trades CICIoMT2024 aam_trans transformer   clean 10  0.9888  0.9863  0.0025     8 0.0078  0.0078
+   v4_confirm trades CICIoMT2024 aam_trans transformer     pgd 10  0.9872  0.9846  0.0026     9 0.0059  0.0059
+   v4_confirm trades CICIoMT2024 aam_trans transformer       L 10  0.0016  0.0017 -0.0001     5 0.6602  0.7617
+   v4_confirm trades CICIoMT2024        ft transformer   clean 10  0.9887  0.9863  0.0024    10 0.0020  0.0059
+   v4_confirm trades CICIoMT2024        ft transformer     pgd 10  0.9872  0.9846  0.0026     9 0.0039  0.0078
+   v4_confirm trades CICIoMT2024        ft transformer       L 10  0.0015  0.0017 -0.0002     3 0.4512  0.9023
+   v4_confirm trades CICIoMT2024 aam_trans          ft   clean 10  0.9888  0.9887  0.0001     6 0.5703  1.0000
+   v4_confirm trades CICIoMT2024 aam_trans          ft     pgd 10  0.9872  0.9872  0.0000     5 0.8047  1.0000
+   v4_confirm trades CICIoMT2024 aam_trans          ft       L 10  0.0016  0.0015  0.0001     5 0.8184  1.0000
+   v4_confirm trades     TON_IoT aam_trans transformer   clean 10  0.9694  0.9464  0.0230    10 0.0020  0.0059
+   v4_confirm trades     TON_IoT aam_trans transformer     pgd 10  0.9655  0.9443  0.0212    10 0.0020  0.0059
+   v4_confirm trades     TON_IoT aam_trans transformer       L 10  0.0039  0.0022  0.0018     4 0.3809  0.7617
+   v4_confirm trades     TON_IoT        ft transformer   clean 10  0.9690  0.9464  0.0225    10 0.0020  0.0059
+   v4_confirm trades     TON_IoT        ft transformer     pgd 10  0.9671  0.9443  0.0228     9 0.0039  0.0078
+   v4_confirm trades     TON_IoT        ft transformer       L 10  0.0019  0.0022 -0.0003     4 0.6797  0.9023
+   v4_confirm trades     TON_IoT aam_trans          ft   clean 10  0.9694  0.9690  0.0005     3 0.9590  1.0000
+   v4_confirm trades     TON_IoT aam_trans          ft     pgd 10  0.9655  0.9671 -0.0016     3 0.5410  1.0000
+   v4_confirm trades     TON_IoT aam_trans          ft       L 10  0.0039  0.0019  0.0021     6 0.1777  0.5332
+
+===== factorial =====
+      tag method    dataset            a           b outcome  n  mean_a  mean_b    diff  wins      p  p_holm
+factorial trades CICIoT2023     grp_none transformer   clean 10  0.7500  0.7681 -0.0181     0 0.0020  0.0215
+factorial trades CICIoT2023     grp_none transformer     pgd 10  0.6699  0.7096 -0.0396     0 0.0020  0.0215
+factorial trades CICIoT2023     grp_none transformer       L 10  0.0800  0.0585  0.0215    10 0.0020  0.0215
+factorial trades CICIoT2023    grp_learn transformer   clean 10  0.7689  0.7681  0.0008     6 0.2871  0.5234
+factorial trades CICIoT2023    grp_learn transformer     pgd 10  0.7100  0.7096  0.0004     4 0.8496  1.0000
+factorial trades CICIoT2023    grp_learn transformer       L 10  0.0590  0.0585  0.0005     6 0.8223  0.8945
+factorial trades CICIoT2023       ft_sin transformer   clean 10  0.7647  0.7681 -0.0034     3 0.0469  0.1875
+factorial trades CICIoT2023       ft_sin transformer     pgd 10  0.7123  0.7096  0.0027     7 0.2930  1.0000
+factorial trades CICIoT2023       ft_sin transformer       L 10  0.0524  0.0585 -0.0061     2 0.0312  0.0938
+factorial trades CICIoT2023     ft_learn transformer   clean 10  0.7917  0.7681  0.0236    10 0.0020  0.0215
+factorial trades CICIoT2023     ft_learn transformer     pgd 10  0.7516  0.7096  0.0421    10 0.0020  0.0215
+factorial trades CICIoT2023     ft_learn transformer       L 10  0.0400  0.0585 -0.0185     0 0.0020  0.0215
+factorial trades CICIoT2023    ft_nobias transformer   clean 10  0.7833  0.7681  0.0152    10 0.0020  0.0215
+factorial trades CICIoT2023    ft_nobias transformer     pgd 10  0.7467  0.7096  0.0371    10 0.0020  0.0215
+factorial trades CICIoT2023    ft_nobias transformer       L 10  0.0366  0.0585 -0.0219     0 0.0020  0.0215
+factorial trades CICIoT2023  shared_none transformer   clean 10  0.4690  0.7681 -0.2991     0 0.0020  0.0215
+factorial trades CICIoT2023  shared_none transformer     pgd 10  0.2525  0.7096 -0.4571     0 0.0020  0.0215
+factorial trades CICIoT2023  shared_none transformer       L 10  0.2166  0.0585  0.1580    10 0.0020  0.0215
+factorial trades CICIoT2023 shared_learn transformer   clean 10  0.7580  0.7681 -0.0101     2 0.0137  0.0684
+factorial trades CICIoT2023 shared_learn transformer     pgd 10  0.7118  0.7096  0.0022     6 0.4043  1.0000
+factorial trades CICIoT2023 shared_learn transformer       L 10  0.0463  0.0585 -0.0122     0 0.0020  0.0215
+factorial trades CICIoT2023    aam_trans transformer   clean 10  0.7934  0.7681  0.0253    10 0.0020  0.0215
+factorial trades CICIoT2023    aam_trans transformer     pgd 10  0.7517  0.7096  0.0421    10 0.0020  0.0215
+factorial trades CICIoT2023    aam_trans transformer       L 10  0.0418  0.0585 -0.0168     0 0.0020  0.0215
+factorial trades CICIoT2023   aam_noGate transformer   clean 10  0.7938  0.7681  0.0257    10 0.0020  0.0215
+factorial trades CICIoT2023   aam_noGate transformer     pgd 10  0.7525  0.7096  0.0429    10 0.0020  0.0215
+factorial trades CICIoT2023   aam_noGate transformer       L 10  0.0413  0.0585 -0.0172     0 0.0020  0.0215
+factorial trades CICIoT2023     aam_noPE transformer   clean 10  0.7656  0.7681 -0.0025     3 0.0586  0.1875
+factorial trades CICIoT2023     aam_noPE transformer     pgd 10  0.7150  0.7096  0.0054     7 0.0195  0.0977
+factorial trades CICIoT2023     aam_noPE transformer       L 10  0.0506  0.0585 -0.0079     1 0.0039  0.0215
+factorial trades CICIoT2023    aam_noTok transformer   clean 10  0.7693  0.7681  0.0012     6 0.2617  0.5234
+factorial trades CICIoT2023    aam_noTok transformer     pgd 10  0.7094  0.7096 -0.0002     5 0.9355  1.0000
+factorial trades CICIoT2023    aam_noTok transformer       L 10  0.0598  0.0585  0.0013     6 0.4473  0.8945
+factorial trades CICIoT2023     grp_none          ft   clean 10  0.7500  0.7921 -0.0422     0 0.0020  0.0215
+factorial trades CICIoT2023     grp_none          ft     pgd 10  0.6699  0.7520 -0.0821     0 0.0020  0.0215
+factorial trades CICIoT2023     grp_none          ft       L 10  0.0800  0.0401  0.0399    10 0.0020  0.0215
+factorial trades CICIoT2023    grp_learn          ft   clean 10  0.7689  0.7921 -0.0232     0 0.0020  0.0215
+factorial trades CICIoT2023    grp_learn          ft     pgd 10  0.7100  0.7520 -0.0420     0 0.0020  0.0215
+factorial trades CICIoT2023    grp_learn          ft       L 10  0.0590  0.0401  0.0188    10 0.0020  0.0215
+factorial trades CICIoT2023       ft_sin          ft   clean 10  0.7647  0.7921 -0.0275     0 0.0020  0.0215
+factorial trades CICIoT2023       ft_sin          ft     pgd 10  0.7123  0.7520 -0.0397     0 0.0020  0.0215
+factorial trades CICIoT2023       ft_sin          ft       L 10  0.0524  0.0401  0.0123    10 0.0020  0.0215
+factorial trades CICIoT2023     ft_learn          ft   clean 10  0.7917  0.7921 -0.0005     3 0.5137  0.5137
+factorial trades CICIoT2023     ft_learn          ft     pgd 10  0.7516  0.7520 -0.0004     5 0.7266  1.0000
+factorial trades CICIoT2023     ft_learn          ft       L 10  0.0400  0.0401 -0.0001     5 0.9551  0.9551
+factorial trades CICIoT2023    ft_nobias          ft   clean 10  0.7833  0.7921 -0.0088     0 0.0020  0.0215
+factorial trades CICIoT2023    ft_nobias          ft     pgd 10  0.7467  0.7520 -0.0053     0 0.0020  0.0215
+factorial trades CICIoT2023    ft_nobias          ft       L 10  0.0366  0.0401 -0.0035     2 0.0078  0.0312
+factorial trades CICIoT2023  shared_none          ft   clean 10  0.4690  0.7921 -0.3231     0 0.0020  0.0215
+factorial trades CICIoT2023  shared_none          ft     pgd 10  0.2525  0.7520 -0.4995     0 0.0020  0.0215
+factorial trades CICIoT2023  shared_none          ft       L 10  0.2166  0.0401  0.1764    10 0.0020  0.0215
+factorial trades CICIoT2023 shared_learn          ft   clean 10  0.7580  0.7921 -0.0341     0 0.0020  0.0215
+factorial trades CICIoT2023 shared_learn          ft     pgd 10  0.7118  0.7520 -0.0402     0 0.0020  0.0215
+factorial trades CICIoT2023 shared_learn          ft       L 10  0.0463  0.0401  0.0061     9 0.0039  0.0215
+factorial trades CICIoT2023    aam_trans          ft   clean 10  0.7934  0.7921  0.0013     8 0.0195  0.0391
+factorial trades CICIoT2023    aam_trans          ft     pgd 10  0.7517  0.7520 -0.0003     5 0.7500  1.0000
+factorial trades CICIoT2023    aam_trans          ft       L 10  0.0418  0.0401  0.0016     8 0.2539  0.7617
+factorial trades CICIoT2023   aam_noGate          ft   clean 10  0.7938  0.7921  0.0017    10 0.0020  0.0215
+factorial trades CICIoT2023   aam_noGate          ft     pgd 10  0.7525  0.7520  0.0005     6 0.6758  1.0000
+factorial trades CICIoT2023   aam_noGate          ft       L 10  0.0413  0.0401  0.0012     6 0.4238  0.8477
+factorial trades CICIoT2023     aam_noPE          ft   clean 10  0.7656  0.7921 -0.0265     0 0.0020  0.0215
+factorial trades CICIoT2023     aam_noPE          ft     pgd 10  0.7150  0.7520 -0.0370     0 0.0020  0.0215
+factorial trades CICIoT2023     aam_noPE          ft       L 10  0.0506  0.0401  0.0105    10 0.0020  0.0215
+factorial trades CICIoT2023    aam_noTok          ft   clean 10  0.7693  0.7921 -0.0229     0 0.0020  0.0215
+factorial trades CICIoT2023    aam_noTok          ft     pgd 10  0.7094  0.7520 -0.0426     0 0.0020  0.0215
+factorial trades CICIoT2023    aam_noTok          ft       L 10  0.0598  0.0401  0.0197    10 0.0020  0.0215
+factorial trades    TON_IoT     grp_none transformer   clean 10  0.9475  0.9467  0.0007     6 0.2891  0.8672
+factorial trades    TON_IoT     grp_none transformer     pgd 10  0.9421  0.9447 -0.0025     2 0.0273  0.1641
+factorial trades    TON_IoT     grp_none transformer       L 10  0.0053  0.0021  0.0033     9 0.0039  0.0352
+factorial trades    TON_IoT    grp_learn transformer   clean 10  0.9513  0.9467  0.0045     8 0.0137  0.0547
+factorial trades    TON_IoT    grp_learn transformer     pgd 10  0.9439  0.9447 -0.0008     3 0.4395  1.0000
+factorial trades    TON_IoT    grp_learn transformer       L 10  0.0074  0.0021  0.0053    10 0.0020  0.0215
+factorial trades    TON_IoT       ft_sin transformer   clean 10  0.9463  0.9467 -0.0005     6 0.8926  1.0000
+factorial trades    TON_IoT       ft_sin transformer     pgd 10  0.9426  0.9447 -0.0021     6 0.5078  1.0000
+factorial trades    TON_IoT       ft_sin transformer       L 10  0.0037  0.0021  0.0016     4 0.7402  1.0000
+factorial trades    TON_IoT     ft_learn transformer   clean 10  0.9700  0.9467  0.0233    10 0.0020  0.0215
+factorial trades    TON_IoT     ft_learn transformer     pgd 10  0.9663  0.9447  0.0216    10 0.0020  0.0215
+factorial trades    TON_IoT     ft_learn transformer       L 10  0.0037  0.0021  0.0017     3 0.4844  1.0000
+factorial trades    TON_IoT    ft_nobias transformer   clean 10  0.9546  0.9467  0.0078    10 0.0020  0.0215
+factorial trades    TON_IoT    ft_nobias transformer     pgd 10  0.9522  0.9447  0.0075    10 0.0020  0.0215
+factorial trades    TON_IoT    ft_nobias transformer       L 10  0.0024  0.0021  0.0003     4 0.7051  1.0000
+factorial trades    TON_IoT  shared_none transformer   clean 10  0.8871  0.9467 -0.0596     0 0.0020  0.0215
+factorial trades    TON_IoT  shared_none transformer     pgd 10  0.8509  0.9447 -0.0938     0 0.0020  0.0215
+factorial trades    TON_IoT  shared_none transformer       L 10  0.0362  0.0021  0.0342    10 0.0020  0.0215
+factorial trades    TON_IoT shared_learn transformer   clean 10  0.9622  0.9467  0.0155     9 0.0098  0.0488
+factorial trades    TON_IoT shared_learn transformer     pgd 10  0.9523  0.9447  0.0076     6 0.1816  0.9082
+factorial trades    TON_IoT shared_learn transformer       L 10  0.0099  0.0021  0.0079     8 0.0078  0.0547
+factorial trades    TON_IoT    aam_trans transformer   clean 10  0.9717  0.9467  0.0250    10 0.0020  0.0215
+factorial trades    TON_IoT    aam_trans transformer     pgd 10  0.9707  0.9447  0.0260    10 0.0020  0.0215
+factorial trades    TON_IoT    aam_trans transformer       L 10  0.0010  0.0021 -0.0011     1 0.0059  0.0469
+factorial trades    TON_IoT   aam_noGate transformer   clean 10  0.9716  0.9467  0.0248    10 0.0020  0.0215
+factorial trades    TON_IoT   aam_noGate transformer     pgd 10  0.9704  0.9447  0.0257    10 0.0020  0.0215
+factorial trades    TON_IoT   aam_noGate transformer       L 10  0.0012  0.0021 -0.0009     3 0.0332  0.1660
+factorial trades    TON_IoT     aam_noPE transformer   clean 10  0.9470  0.9467  0.0002     7 0.9258  1.0000
+factorial trades    TON_IoT     aam_noPE transformer     pgd 10  0.9434  0.9447 -0.0013     7 0.7012  1.0000
+factorial trades    TON_IoT     aam_noPE transformer       L 10  0.0036  0.0021  0.0015     3 0.9434  1.0000
+factorial trades    TON_IoT    aam_noTok transformer   clean 10  0.9556  0.9467  0.0089     9 0.0039  0.0234
+factorial trades    TON_IoT    aam_noTok transformer     pgd 10  0.9480  0.9447  0.0033     7 0.3379  1.0000
+factorial trades    TON_IoT    aam_noTok transformer       L 10  0.0077  0.0021  0.0056     9 0.0117  0.0703
+factorial trades    TON_IoT     grp_none          ft   clean 10  0.9475  0.9717 -0.0242     0 0.0020  0.0215
+factorial trades    TON_IoT     grp_none          ft     pgd 10  0.9421  0.9702 -0.0280     0 0.0020  0.0215
+factorial trades    TON_IoT     grp_none          ft       L 10  0.0053  0.0015  0.0038     9 0.0137  0.0957
+factorial trades    TON_IoT    grp_learn          ft   clean 10  0.9513  0.9717 -0.0204     0 0.0020  0.0215
+factorial trades    TON_IoT    grp_learn          ft     pgd 10  0.9439  0.9702 -0.0263     0 0.0020  0.0215
+factorial trades    TON_IoT    grp_learn          ft       L 10  0.0074  0.0015  0.0058     9 0.0059  0.0586
+factorial trades    TON_IoT       ft_sin          ft   clean 10  0.9463  0.9717 -0.0254     0 0.0020  0.0215
+factorial trades    TON_IoT       ft_sin          ft     pgd 10  0.9426  0.9702 -0.0276     0 0.0020  0.0215
+factorial trades    TON_IoT       ft_sin          ft       L 10  0.0037  0.0015  0.0022     5 0.4277  1.0000
+factorial trades    TON_IoT     ft_learn          ft   clean 10  0.9700  0.9717 -0.0016     4 0.2305  0.6914
+factorial trades    TON_IoT     ft_learn          ft     pgd 10  0.9663  0.9702 -0.0038     3 0.1875  0.5625
+factorial trades    TON_IoT     ft_learn          ft       L 10  0.0037  0.0015  0.0022     5 0.2266  1.0000
+factorial trades    TON_IoT    ft_nobias          ft   clean 10  0.9546  0.9717 -0.0171     0 0.0020  0.0215
+factorial trades    TON_IoT    ft_nobias          ft     pgd 10  0.9522  0.9702 -0.0179     0 0.0020  0.0215
+factorial trades    TON_IoT    ft_nobias          ft       L 10  0.0024  0.0015  0.0008     6 0.3945  1.0000
+factorial trades    TON_IoT  shared_none          ft   clean 10  0.8871  0.9717 -0.0846     0 0.0020  0.0215
+factorial trades    TON_IoT  shared_none          ft     pgd 10  0.8509  0.9702 -0.1193     0 0.0020  0.0215
+factorial trades    TON_IoT  shared_none          ft       L 10  0.0362  0.0015  0.0347    10 0.0020  0.0215
+factorial trades    TON_IoT shared_learn          ft   clean 10  0.9622  0.9717 -0.0095     2 0.0078  0.0312
+factorial trades    TON_IoT shared_learn          ft     pgd 10  0.9523  0.9702 -0.0179     1 0.0098  0.0391
+factorial trades    TON_IoT shared_learn          ft       L 10  0.0099  0.0015  0.0084     9 0.0098  0.0879
+factorial trades    TON_IoT    aam_trans          ft   clean 10  0.9717  0.9717  0.0000     4 0.9883  1.0000
+factorial trades    TON_IoT    aam_trans          ft     pgd 10  0.9707  0.9702  0.0006     4 0.7559  1.0000
+factorial trades    TON_IoT    aam_trans          ft       L 10  0.0010  0.0015 -0.0006     4 0.3691  1.0000
+factorial trades    TON_IoT   aam_noGate          ft   clean 10  0.9716  0.9717 -0.0001     5 0.7070  1.0000
+factorial trades    TON_IoT   aam_noGate          ft     pgd 10  0.9704  0.9702  0.0002     5 0.7227  1.0000
+factorial trades    TON_IoT   aam_noGate          ft       L 10  0.0012  0.0015 -0.0004     4 0.4199  1.0000
+factorial trades    TON_IoT     aam_noPE          ft   clean 10  0.9470  0.9717 -0.0247     0 0.0020  0.0215
+factorial trades    TON_IoT     aam_noPE          ft     pgd 10  0.9434  0.9702 -0.0268     0 0.0020  0.0215
+factorial trades    TON_IoT     aam_noPE          ft       L 10  0.0036  0.0015  0.0021     6 0.5137  1.0000
+factorial trades    TON_IoT    aam_noTok          ft   clean 10  0.9556  0.9717 -0.0160     1 0.0039  0.0215
+factorial trades    TON_IoT    aam_noTok          ft     pgd 10  0.9480  0.9702 -0.0222     1 0.0039  0.0215
+factorial trades    TON_IoT    aam_noTok          ft       L 10  0.0077  0.0015  0.0062     9 0.0117  0.0938
+
+===== multiclass =====
+       tag method     dataset         a           b outcome  n  mean_a  mean_b    diff  wins      p  p_holm
+multiclass trades  CICIoT2023        ft transformer   clean 10  0.6912  0.6742  0.0170    10 0.0020  0.0059
+multiclass trades  CICIoT2023        ft transformer     pgd 10  0.6566  0.6204  0.0363    10 0.0020  0.0059
+multiclass trades  CICIoT2023        ft transformer       L 10  0.0345  0.0538 -0.0193     0 0.0020  0.0059
+multiclass trades  CICIoT2023 aam_trans          ft   clean 10  0.6923  0.6912  0.0011     8 0.1660  0.4980
+multiclass trades  CICIoT2023 aam_trans          ft     pgd 10  0.6536  0.6566 -0.0031     2 0.1074  0.2148
+multiclass trades  CICIoT2023 aam_trans          ft       L 10  0.0387  0.0345  0.0041     9 0.0176  0.0527
+multiclass trades  CICIoT2023 aam_trans transformer   clean 10  0.6923  0.6742  0.0181    10 0.0020  0.0059
+multiclass trades  CICIoT2023 aam_trans transformer     pgd 10  0.6536  0.6204  0.0332    10 0.0020  0.0059
+multiclass trades  CICIoT2023 aam_trans transformer       L 10  0.0387  0.0538 -0.0152     0 0.0020  0.0059
+multiclass trades CICIoMT2024        ft transformer   clean 10  0.8257  0.8022  0.0235    10 0.0020  0.0059
+multiclass trades CICIoMT2024        ft transformer     pgd 10  0.7280  0.7020  0.0260    10 0.0020  0.0059
+multiclass trades CICIoMT2024        ft transformer       L 10  0.0977  0.1002 -0.0025     5 0.2734  0.2734
+multiclass trades CICIoMT2024 aam_trans          ft   clean 10  0.8262  0.8257  0.0005     7 0.7266  1.0000
+multiclass trades CICIoMT2024 aam_trans          ft     pgd 10  0.7277  0.7280 -0.0003     6 0.7441  0.7441
+multiclass trades CICIoMT2024 aam_trans          ft       L 10  0.0985  0.0977  0.0008     5 0.6484  0.8477
+multiclass trades CICIoMT2024 aam_trans transformer   clean 10  0.8262  0.8022  0.0239    10 0.0020  0.0059
+multiclass trades CICIoMT2024 aam_trans transformer     pgd 10  0.7277  0.7020  0.0257    10 0.0020  0.0059
+multiclass trades CICIoMT2024 aam_trans transformer       L 10  0.0985  0.1002 -0.0017     6 0.4727  0.4727
+multiclass trades     TON_IoT        ft transformer   clean 10  0.8814  0.8301  0.0513    10 0.0020  0.0059
+multiclass trades     TON_IoT        ft transformer     pgd 10  0.7912  0.7851  0.0061     5 0.2324  0.2324
+multiclass trades     TON_IoT        ft transformer       L 10  0.0902  0.0450  0.0452     9 0.0039  0.0078
+multiclass trades     TON_IoT aam_trans          ft   clean 10  0.8798  0.8814 -0.0017     6 0.8945  1.0000
+multiclass trades     TON_IoT aam_trans          ft     pgd 10  0.8012  0.7912  0.0100     8 0.0293  0.0879
+multiclass trades     TON_IoT aam_trans          ft       L 10  0.0786  0.0902 -0.0116     5 0.4238  0.8477
+multiclass trades     TON_IoT aam_trans transformer   clean 10  0.8798  0.8301  0.0496    10 0.0020  0.0059
+multiclass trades     TON_IoT aam_trans transformer     pgd 10  0.8012  0.7851  0.0161     9 0.0059  0.0059
+multiclass trades     TON_IoT aam_trans transformer       L 10  0.0786  0.0450  0.0336     7 0.0312  0.0625
+
+===== strong attacks (mean MCC) =====
+                         clean   pgd20  ...  pgd20_sq  square5000
+dataset    backbone                     ...                      
+CICIoT2023 aam_trans    0.7921  0.7518  ...    0.7535      0.7530
+           ft           0.7904  0.7506  ...    0.7521      0.7522
+           transformer  0.7714  0.7133  ...    0.7154      0.7153
+TON_IoT    aam_trans    0.9696  0.9654  ...    0.9677      0.9677
+           ft           0.9686  0.9667  ...    0.9697      0.9697
+           transformer  0.9466  0.9445  ...    0.9441      0.9443
+
+[6 rows x 6 columns]
+   dataset     attack                   cmp    diff  wins  n      p
+CICIoT2023      pgd20        ft-transformer  0.0374    10 10 0.0020
+CICIoT2023      pgd20 aam_trans-transformer  0.0386    10 10 0.0020
+CICIoT2023      pgd20          aam_trans-ft  0.0012     6 10 0.4863
+CICIoT2023   pgd100r5        ft-transformer  0.0371    10 10 0.0020
+CICIoT2023   pgd100r5 aam_trans-transformer  0.0381    10 10 0.0020
+CICIoT2023   pgd100r5          aam_trans-ft  0.0010     5 10 0.5762
+CICIoT2023 square5000        ft-transformer  0.0369    10 10 0.0020
+CICIoT2023 square5000 aam_trans-transformer  0.0378    10 10 0.0020
+CICIoT2023 square5000          aam_trans-ft  0.0009     6 10 0.5625
+   TON_IoT      pgd20        ft-transformer  0.0222     9 10 0.0039
+   TON_IoT      pgd20 aam_trans-transformer  0.0209    10 10 0.0020
+   TON_IoT      pgd20          aam_trans-ft -0.0013     4 10 0.6211
+   TON_IoT   pgd100r5        ft-transformer  0.0222     9 10 0.0039
+   TON_IoT   pgd100r5 aam_trans-transformer  0.0209    10 10 0.0020
+   TON_IoT   pgd100r5          aam_trans-ft -0.0013     4 10 0.6211
+   TON_IoT square5000        ft-transformer  0.0255    10 10 0.0020
+   TON_IoT square5000 aam_trans-transformer  0.0235     9 10 0.0039
+   TON_IoT square5000          aam_trans-ft -0.0020     4 10 0.5625

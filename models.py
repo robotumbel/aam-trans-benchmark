@@ -31,14 +31,18 @@ D_MODEL, N_HEADS, N_LAYERS, D_FF, DROPOUT, N_PATCH = 96, 4, 3, 384, 0.1, 8
 class FeatureTokenizer(nn.Module):
     """Token j = x_j * w_j + b_j: one learned embedding per input feature."""
 
-    def __init__(self, d: int, dm: int):
+    def __init__(self, d: int, dm: int, bias: bool = True, shared: bool = False):
         super().__init__()
-        self.w = nn.Parameter(torch.randn(d, dm) / math.sqrt(dm))
-        self.b = nn.Parameter(torch.zeros(d, dm))
+        # shared=True: one embedding for all features (token j = x_j * w + b),
+        # so a token carries the value but not the identity of its feature.
+        k = 1 if shared else d
+        self.w = nn.Parameter(torch.randn(k, dm) / math.sqrt(dm))
+        self.b = nn.Parameter(torch.zeros(k, dm)) if bias else None
         self.n_tokens = d
 
     def forward(self, x):                       # [B, d] -> [B, d, dm]
-        return x.unsqueeze(-1) * self.w + self.b
+        z = x.unsqueeze(-1) * self.w
+        return z + self.b if self.b is not None else z
 
 
 class PatchTokenizer(nn.Module):
@@ -214,8 +218,10 @@ class TabTransformer(nn.Module):
                  L=N_LAYERS, dff=D_FF, dropout=DROPOUT, token_gate=False,
                  attn="softmax", act="relu", purify=False):
         super().__init__()
-        self.tok = (FeatureTokenizer(d, dm) if tokenizer == "feature"
-                    else PatchTokenizer(d, dm))
+        self.tok = {"feature": lambda: FeatureTokenizer(d, dm),
+                    "feature_nobias": lambda: FeatureTokenizer(d, dm, bias=False),
+                    "shared": lambda: FeatureTokenizer(d, dm, shared=True),
+                    "patch": lambda: PatchTokenizer(d, dm)}[tokenizer]()
         # v3a: perturbation-aware token gate driven by a leave-one-out
         # linear predictor of every feature from the others.
         self.token_gate = token_gate
@@ -319,6 +325,7 @@ class LSTMNet(nn.Module):
 
 AAM = dict(tokenizer="feature", pe="learned", gate=True, aux=True)
 VANILLA = dict(tokenizer="patch", pe="sinusoidal", gate=False, aux=False)
+PLAIN = dict(gate=False, aux=False)
 
 BACKBONES = {
     "transformer":  VANILLA,
@@ -342,6 +349,16 @@ BACKBONES = {
     "aam_v4b":      {**AAM, "gate": False, "purify": True},
     "aam_v4c":      {**AAM, "gate": False, "attn": "l2"},
     "aam_v4d":      {**AAM, "gate": False, "act": "gelu"},
+    # v5 (PROTOCOL_V5.md): tokeniser x position factorial on the plain
+    # skeleton (no gate, no reconstruction head). group/sinusoidal is
+    # "transformer"; feature/none is "ft".
+    "grp_none":     {**PLAIN, "tokenizer": "patch", "pe": "none"},
+    "grp_learn":    {**PLAIN, "tokenizer": "patch", "pe": "learned"},
+    "ft_sin":       {**PLAIN, "tokenizer": "feature", "pe": "sinusoidal"},
+    "ft_learn":     {**PLAIN, "tokenizer": "feature", "pe": "learned"},
+    "ft_nobias":    {**PLAIN, "tokenizer": "feature_nobias", "pe": "none"},
+    "shared_none":  {**PLAIN, "tokenizer": "shared", "pe": "none"},
+    "shared_learn": {**PLAIN, "tokenizer": "shared", "pe": "learned"},
 }
 
 # Extra training-loss terms of the gate v2 candidates: (kind, weight).

@@ -33,7 +33,7 @@ import torch
 from models import BACKBONES, build, n_params, TabTransformer
 
 D, C = 39, 2
-NAMES = ["transformer", "aam_trans", "aam_noGate", "aam_noTok", "aam_noPE",
+NAMES = ["transformer", "ft", "aam_trans", "aam_noGate", "aam_noTok", "aam_noPE",
          "aam_noAux", "mlp", "lstm"]
 
 

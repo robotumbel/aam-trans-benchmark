@@ -144,6 +144,8 @@ def summary(df):
 
 # ── LaTeX helpers ──────────────────────────────────────────────────────────
 def fmt_p(p):
+    if p < 1e-4:
+        return "$<\\!10^{-4}$"
     return "$<\\!10^{-3}$" if p < 1e-3 else f"{p:.3f}"
 
 
